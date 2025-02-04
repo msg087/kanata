@@ -1,0 +1,103 @@
+
+
+(defcfg
+  movemouse-inherit-accel-state yes
+  movemouse-smooth-diagonals yes
+  concurrent-tap-hold yes
+)
+
+
+(defsrc)
+
+
+(defvar
+  ;; Note: consider using different time values for your different fingers.
+  ;; For example, your pinkies might be slower to release keys and index
+  ;; fingers faster.
+  tap-time 150 ;; tap time out
+  hold-time 150 ;;
+)
+
+(defalias
+  a (tap-hold $tap-time $hold-time a lctl)
+  s (tap-hold $tap-time $hold-time s lalt)
+  d (tap-hold $tap-time $hold-time d lsft)
+  l (tap-hold $tap-time $hold-time l rctl)
+  ; (tap-hold $tap-time $hold-time ; ralt)
+  ' (tap-hold $tap-time $hold-time ' rmet)
+
+ nav-arrows (layer-while-held arrows-layer)
+ nav-mouse (layer-while-held mouse-layer)
+
+
+  mwu (mwheel-up 50 120)
+  mwd (mwheel-down 50 120)
+  mwl (mwheel-left 50 120)
+  mwr (mwheel-right 50 120)
+
+  ;;mlc (mlft)
+
+  ms↑ (movemouse-up 1 1)
+  ms← (movemouse-left 1 1)
+  ms↓ (movemouse-down 1 1)
+  ms→ (movemouse-right 1 1)
+
+  ma↑ (movemouse-accel-up 1 1000 1 5)
+  ma← (movemouse-accel-left 1 1000 1 5)
+  ma↓ (movemouse-accel-down 1 1000 1 5)
+  ma→ (movemouse-accel-right 1 1000 1 5)
+
+  sm (setmouse 32228 32228)
+
+  fst (movemouse-speed 200)
+
+
+;;  lalt-mod (layer-toggle arrows)
+)
+
+(defchordsv2
+  (a s)    @nav-arrows      200 all-released  (arrows-layer)
+  (s d)    @nav-mouse      200 all-released  (mouse-layer)
+)
+
+
+(deflayermap (base-layer)
+  caps esc
+  a @a
+  s @s
+  d @d
+  l @l
+  ; @;
+  ' @'
+
+  ;;lalt @nav-arrows
+  )
+
+(deflayermap (arrows-layer)
+ h left
+ j down
+ k up
+ l rght
+ )
+
+
+(deflayermap (mouse-layer)
+h @ms← 
+j @ms↓ 
+k @ms↑
+l @ms→
+
+n @mwd
+m @mwu
+
+enter mlft
+
+)
+
+;; (deflayer (mouse-layer)
+;;   _    @mwu @mwd @mwl @mwr _    _    _    _    _    @ma↑ _    _    _
+;;   _    pgup bck  _    fwd  _    _    _    _    @ma← @ma↓ @ma→ _    _
+;;   _    pgdn mlft _    mrgt mmid _    mbck mfwd _    @ms↑ _    _
+;;   @fst _    mltp _    mrtp mmtp _    mbtp mftp @ms← @ms↓ @ms→
+;;   _    _    _              _              _    _    _
+;; )
